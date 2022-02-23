@@ -2,9 +2,7 @@
 
 In this document am trying to share this side project i have been working on for past few weeks to solve some of the problmes i countered and saw in ML workflows and ML Lifecycle. This repository start all away from beginning, first by explaining why all this and what could be added to the way i was working as a data scientist. it gonna dive in each tool of this stack and why i have choosed to go with it then we gonna go implement and install everything on Minikube (minikube is **local Kubernetes**, focusing on making it easy to learn and develop for Kubernetes!) 
 
-![                                                                              This illustration is a simplified is Diagram for this MLStack and how different Components work together.](images%20%E2%87%92%20%205d409/MLARGO_(1).jpeg)
-
-                                                                              This illustration is a simplified is Diagram for this MLStack and how different Components work together.
+![This illustration is a simplified is Diagram for this MLStack and how different Components work together.](images/MLARGO_(1).jpeg)
 
 # What are the problems that i have saw and countered building and deploying ML systems?
 
@@ -26,7 +24,7 @@ Problems i have countered and i was always frustrated with :
 
 ## First : Everything on Kubernetes
 
-![Untitled](images%20%E2%87%92%20%205d409/Untitled.png)
+![Untitled](images/Untitled.png)
 
 it’s really hard nowadays even for data Scientists to not hear of the K8s or kubernetes at least once as part of a project or a solution or a tool he may be utilising.
 
@@ -40,7 +38,7 @@ it’s really hard nowadays even for data Scientists to not hear of the K8s or k
 
 ## Workflows with Argo (Pipeline and DAG’s within Kubernetes)
 
-![Untitled](images%20%E2%87%92%20%205d409/Untitled%201.png)
+![Untitled](images/Untitled%201.png)
 
 Machine learning is not a one-way pipeline, but an iterative loop. It includes four parts: data preprocessing, model training, model deployment and data update. Among them, the preprocessing and model training involves the adjustment of parameters while the entire ML process involves cooperation between links. There is a lot of communication work, code rewriting and environment configuration that undergoes in a machine learning process. So we will need something that will provide this flexibility and capable to create graphs ****or Dags (**[Directed acyclic graph](https://en.wikipedia.org/wiki/Directed_acyclic_graph))** This where Argo come to the picture.
 
@@ -50,7 +48,7 @@ Argo Workflows is an **open source container-native workflow engine for orchest
 
 ## Code and Dataset Versioning :
 
-![Untitled](images%20%E2%87%92%20%205d409/Untitled%202.png)
+![Untitled](images/Untitled%202.png)
 
 For this we will be using Git, i think there is no need to talk about why Git and where we can use it. Git is a version controller system which means we can version and controll changes in our codes by maintaining a history of all changes made to the code. 
 
@@ -89,7 +87,7 @@ Git & DVC are not integrated in the stack directly but more like it a practice t
 
 ## Experiment tracking and Model Registry :
 
-![Untitled](images%20%E2%87%92%20%205d409/Untitled%203.png)
+![Untitled](images/Untitled%203.png)
 
 For this we will be using MLFlow, according to MLFlow website “MLflow is an open source platform to manage the ML lifecycle, including experimentation, reproducibility, deployment, and a central model registry. MLflow currently offers four components: MLFlow Tracking, MLFlow Project, MLFlow Models, Model Registry”
 
@@ -111,7 +109,7 @@ MLFlow will be used inside the step or task containers. it’s job is either sta
 
 ## Model deployment:
 
-![Untitled](images%20%E2%87%92%20%205d409/Untitled%204.png)
+![Untitled](images/Untitled%204.png)
 
 So after writing diffrenet codes and do expirements of different architectures and models and selecting the best model, we reach the deployment stage. we need some deployment tool that can cover all the different libraries such as Tensorflow, Pytorch, and SKLearn... it provides autoscaling and it can be managed for A/B testing and other deployment Strategies. 
 
