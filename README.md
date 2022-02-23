@@ -127,7 +127,3 @@ So after writing diffrenet codes and do expirements of different architectures a
 ### How is it implemented in the stack
 
 Kserve in our case will be getting triggered by Argo workflows, since it will be getting all information related to the new deployment from previous step (normally retrieve-best-model step) and get model name, version, model flavor or library used to create model and finally the model URI from MLFlow (Link of the model artifact from storage)
-
-# Let’s Try Install everything and test an example
-
-With this installation you can conveniently run through the tutorial directly on a laptop assuming it has enough resources. It has been tested on a 4 cores machine, `x86-64`  architecture with 16GB RAM. Minikube provides a single-node local cluster, so this installation is meant just for testing purposes.
