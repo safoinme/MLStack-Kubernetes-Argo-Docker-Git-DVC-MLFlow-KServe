@@ -1,0 +1,36 @@
+# spinnaker-role-and-rolebinding-target.yml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: argo-kserve-deployer-role
+  namespace: kserve-deployement # Should be namespace you are granting access to
+rules:
+- apiGroups: ["serving.kserve.io"]
+  resources: ["*"]
+  verbs: ["*"]
+- apiGroups:
+  - serving.kserve.io
+  resources:
+  - "*"
+  verbs:
+  - "*"
+- apiGroups:
+  - serving.kserve.io
+  resources:
+  - inferenceservices
+  verbs:
+  - "*"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: argo-kserve-deployer-rolebinding
+  namespace: kserve-deployement # Should be namespace you are granting access to
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: argo-kserve-deployer-role # Should match name of Role
+subjects:
+- namespace: argo # Should match namespace where SA lives
+  kind: ServiceAccount
+  name: default # Should match service account name, above

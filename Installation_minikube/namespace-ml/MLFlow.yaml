@@ -1,0 +1,95 @@
+# Creating MLflow deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlflow-deployment
+  namespace: ml
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mlflow-deployment
+  template:
+    metadata:
+      labels:
+        app: mlflow-deployment
+    spec:
+      containers:
+      - name: mlflow-deployment
+        image: safoinme/mlflow_server:1.23.1
+        imagePullPolicy: Always
+        args:
+        - --host=0.0.0.0
+        - --port=5000
+        - --backend-store-uri=postgresql://mlflow_user:mlflow_post_pwd@x.x.x.x:5432/mlflow_db
+        - --default-artifact-root=s3://mlflow-bucket/
+        - --workers=1
+        env:
+        - name: MLFLOW_S3_ENDPOINT_URL
+          value: http://x.x.x.x:9000
+        - name: AWS_ACCESS_KEY_ID
+          value: "minio"
+        - name: AWS_SECRET_ACCESS_KEY
+          value: "Do&BfNOtNcWqGtWV5i"
+        ports:
+        - name: http
+          containerPort: 5000
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mlflow-service
+  namespace: ml
+spec:
+  type: NodePort
+  ports:
+    - port: 5000
+      targetPort: 5000
+      protocol: TCP
+      name: http
+  selector:
+    app: mlflow-deployment
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mlflow-service-standard
+  namespace: ml
+spec:
+  selector:
+    app: mlflow-deployment
+  ports:
+    - port: 5000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mlflow-ingress
+  namespace: ml
+  annotations:
+    # type of authentication
+    nginx.ingress.kubernetes.io/auth-type: basic
+    # name of the secret that contains the user/password definitions
+    nginx.ingress.kubernetes.io/auth-secret: basic-auth
+    # message to display with an appropriate context why the authentication is required
+    nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required - mlflow'
+    #nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  defaultBackend:
+    service:
+      name: nginx-custom-default-backend
+      port:
+        number: 80  
+  rules:
+  - http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: mlflow-service-standard
+              port:
+                number: 5000      
